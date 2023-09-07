@@ -22,7 +22,7 @@ const signupZodSchema = z.object({
 	}),
 });
 
-const loginZodSchema = z.object({
+const signinZodSchema = z.object({
 	body: z.object({
 		email: z.string({
 			required_error: 'email is required',
@@ -54,7 +54,7 @@ const changePasswordZodSchema = z.object({
 
 export const AuthValidation = {
 	signupZodSchema,
-	loginZodSchema,
+	signinZodSchema,
 	refreshTokenZodSchema,
 	changePasswordZodSchema
 };
