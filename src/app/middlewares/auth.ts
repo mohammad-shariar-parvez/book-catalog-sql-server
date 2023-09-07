@@ -4,6 +4,7 @@ import { Secret } from 'jsonwebtoken';
 import config from '../../config';
 import ApiError from '../../errors/ApiError';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
+import { prisma } from '../../shared/prisma';
 
 const auth =
   (...requiredRoles: string[]) =>
@@ -11,17 +12,26 @@ const auth =
       try {
         //get authorization token
         const token = req.headers.authorization;
+
+        //Check whether token exist 
         if (!token) {
           throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
         }
         // verify token
         let verifiedUser = null;
-
         verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
-
         req.user = verifiedUser; // role  , userid ,email
 
-        // role diye guard korar jnno
+        //Check whether valid user exist on database 
+        const isUserExist = await prisma.user.findUnique({
+          where: {
+            id: verifiedUser.userId
+          }
+        });
+        if (!isUserExist) {
+          throw new ApiError(httpStatus.NOT_FOUND, 'Valid user does not exist in token');
+        }
+        //Check whether valid Role exist on database 
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
           throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
         }
