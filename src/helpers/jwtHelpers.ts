@@ -10,6 +10,7 @@ const createToken = (
   });
 };
 
+
 const verifyToken = (token: string, secret: Secret): JwtPayload => {
   return jwt.verify(token, secret) as JwtPayload;
 };
