@@ -28,6 +28,7 @@ model Category {
   title String @unique
 }
 
+//
 enum Role {
   admin
   customer
