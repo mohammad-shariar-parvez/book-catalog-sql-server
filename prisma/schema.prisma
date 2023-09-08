@@ -23,6 +23,11 @@ model User {
   updatedAt  DateTime @updatedAt
 }
 
+model Category {
+  id    String @id @default(uuid())
+  title String @unique
+}
+
 enum Role {
   admin
   customer
