@@ -1,6 +1,5 @@
 import { Prisma, User } from "@prisma/client";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
-import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 import { prisma } from "../../../shared/prisma";
 import { userSearchableFields, userSelect } from "./user.constant";
@@ -9,11 +8,11 @@ import { IUserFilters } from "./user.interface";
 const getAllUsers = async (
 	filters: IUserFilters,
 	paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<Partial<User>[]>> => {
+): Promise<Partial<User>[]> => {
 
 	// Extract searchTerm to implement search query
 	const { searchTerm, ...filtersData } = filters;
-	const { page, limit, skip, sortBy, sortOrder } =
+	const { size, skip, sortBy, sortOrder } =
 		paginationHelpers.calculatePagination(paginationOptions);
 
 	const andConditions = [];
@@ -47,19 +46,11 @@ const getAllUsers = async (
 		where: whereConditions,
 		select: userSelect,
 		skip,
-		take: limit,
+		take: size,
 		orderBy: { [sortBy]: sortOrder },
 	});
-	const total = await prisma.user.count();
 
-	return {
-		meta: {
-			page,
-			limit,
-			total,
-		},
-		data: result,
-	};
+	return result;
 };
 
 
