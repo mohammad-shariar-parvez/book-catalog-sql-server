@@ -217,13 +217,9 @@ const getOrderByOrderId = async (token: string, orderId: string): Promise<any | 
 };
 
 
-
-
-
 export const OrderService = {
 	createOrder,
 	getAllOrder,
 	getOrderByOrderId
-	// getSingleUser,
 
 }
