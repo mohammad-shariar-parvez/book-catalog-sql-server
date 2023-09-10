@@ -11,9 +11,9 @@ const signupUser = catchAsync(async (req: Request, res: Response) => {
 	const result = await AuthService.signupUser(userData);
 
 	sendResponse(res, {
-		statusCode: httpStatus.OK,
 		success: true,
-		message: 'User Signup in successfully !',
+		statusCode: httpStatus.OK,
+		message: 'User created successfully!',
 		data: result,
 	});
 });
@@ -30,9 +30,9 @@ const signinUser = catchAsync(async (req: Request, res: Response) => {
 	res.cookie('refreshToken', refreshToken, cookieOptions);
 
 	sendResponse<ILoginUserResponse>(res, {
-		statusCode: httpStatus.OK,
 		success: true,
-		message: 'User Signin in successfully !',
+		statusCode: httpStatus.OK,
+		message: 'User signin successfully!',
 		data: others,
 	});
 });
@@ -50,8 +50,8 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 	res.cookie('refreshToken', refreshToken, cookieOptions);
 
 	sendResponse<IRefreshTokenResponse>(res, {
-		statusCode: 200,
 		success: true,
+		statusCode: 200,
 		message: 'User logged in successfully !',
 		data: result,
 	});
@@ -64,8 +64,8 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 	await AuthService.changePassword(user, passwordData);
 
 	sendResponse(res, {
-		statusCode: 200,
 		success: true,
+		statusCode: 200,
 		message: 'Password changed successfully !',
 	});
 });

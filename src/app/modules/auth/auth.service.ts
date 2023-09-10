@@ -6,11 +6,12 @@ import ApiError from "../../../errors/ApiError";
 import { bcryptHelpers } from "../../../helpers/bycryptHelpers";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
 import { prisma } from "../../../shared/prisma";
+import { userSelect } from "../user/user.constant";
 import { IChangePassword, ILoginUser, ILoginUserResponse, IRefreshTokenResponse } from "./auth.interface";
 
 const signupUser = async (
 	userData: User
-): Promise<User | null> => {
+): Promise<Partial<User | null>> => {
 	const { password, ...userWithoutPassword } = userData;
 
 	const hashedPassword = await bcryptHelpers.hashedPassword(password)
@@ -19,7 +20,8 @@ const signupUser = async (
 		data: {
 			...userWithoutPassword,
 			password: await hashedPassword,
-		}
+		},
+		select: userSelect
 	});
 	// console.log("user signup", result);
 	return user;
