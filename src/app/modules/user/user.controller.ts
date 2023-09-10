@@ -18,11 +18,10 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 	);
 
 	sendResponse<Partial<User>[]>(res, {
-		statusCode: httpStatus.OK,
 		success: true,
+		statusCode: httpStatus.OK,
 		message: 'Users retrieved successfully !',
-		meta: result.meta,
-		data: result.data,
+		data: result
 	});
 });
 
@@ -33,7 +32,7 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 	sendResponse<Partial<User>>(res, {
 		statusCode: httpStatus.OK,
 		success: true,
-		message: 'User retrieved successfully !',
+		message: 'User getched successfully !',
 		data: result,
 	});
 });

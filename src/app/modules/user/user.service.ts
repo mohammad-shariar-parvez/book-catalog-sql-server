@@ -12,7 +12,7 @@ const getAllUsers = async (
 
 	// Extract searchTerm to implement search query
 	const { searchTerm, ...filtersData } = filters;
-	const { size, skip, sortBy, sortOrder } =
+	const { size, skip } =
 		paginationHelpers.calculatePagination(paginationOptions);
 
 	const andConditions = [];
@@ -47,7 +47,6 @@ const getAllUsers = async (
 		select: userSelect,
 		skip,
 		take: size,
-		orderBy: { [sortBy]: sortOrder },
 	});
 
 	return result;

@@ -9,7 +9,7 @@ import { userValidation } from './user.validation';
 
 const router = express.Router();
 
-router.get('/:id', UserController.getSingleUser);
+router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getSingleUser);
 router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers);
 router.patch(
 	'/:id',
