@@ -11,16 +11,15 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  password   String
-  role       Role
-  contactNo  String
-  address    String
-  profileImg String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             Role
+  contactNo        String
+  address          String
+  profileImg       String
+  reviewAndRatings ReviewAndRating[]
 }
 
 model Category {
@@ -30,16 +29,55 @@ model Category {
 }
 
 model Book {
-  id              String   @id @default(uuid())
-  title           String
-  author          String
-  genre           String
-  price           Float
-  publicationDate String
-  categoryId      String
-  category        Category @relation(fields: [categoryId], references: [id])
+  id               String            @id @default(uuid())
+  title            String
+  author           String
+  price            Float
+  genre            String
+  publicationDate  String
+  categoryId       String
+  category         Category          @relation(fields: [categoryId], references: [id])
+  reviewAndRatings ReviewAndRating[]
 
   @@map("book")
+}
+
+model ReviewAndRating {
+  id     String @id @default(uuid())
+  review String
+  rating Int
+  userId String
+  bookId String
+  user   User   @relation(fields: [userId], references: [id])
+  book   Book   @relation(fields: [bookId], references: [id])
+
+  @@map("review_and_rating")
+}
+
+model Order {
+  id           String        @id @default(uuid())
+  userId       String
+  status       Status        @default(pending)
+  createdAt    DateTime      @default(now())
+  orderedBooks OrderedBook[]
+
+  @@map("order")
+}
+
+model OrderedBook {
+  id       String @id @default(uuid())
+  orderId  String
+  bookId   String
+  quantity Int
+  order    Order  @relation(fields: [orderId], references: [id])
+
+  @@map("ordered_book")
+}
+
+enum Status {
+  pending
+  shipped
+  delivered
 }
 
 enum Role {
