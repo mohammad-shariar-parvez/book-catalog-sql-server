@@ -6,10 +6,7 @@ import sendResponse from "../../../shared/sendResponse";
 import { CategoryService } from "./category.service";
 
 const createCategory = catchAsync(async (req: Request, res: Response) => {
-	//console.log(req.body)
 	const result = await CategoryService.createCategory(req.body);
-	console.log("RESULT", result);
-
 	sendResponse<Category>(res, {
 		statusCode: httpStatus.OK,
 		success: true,
