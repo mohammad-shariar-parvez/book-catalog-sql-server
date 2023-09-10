@@ -16,7 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/v1', routes);
-
+app.get('/', (req: Request, res: Response) => {
+  res.send('Welcome to msp-book-catalog-sql-server !');
+});
 
 //global error handler
 app.use(globalErrorHandler);
