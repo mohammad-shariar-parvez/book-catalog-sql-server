@@ -8,11 +8,48 @@ import { IBookFilterableFields } from "./book.interface";
 
 const createBook = async (payload: Book): Promise<Book> => {
 	const book = await prisma.book.create({
-		data: payload
+		data: payload,
+		include: {
+			category: true
+		}
 	})
 	return book
 }
 
+const getBooksByCategory = async (
+	categoryId: string
+): Promise<IGenericResponse<Book[]>> => {
+	const { size, page, skip, sortBy, sortOrder } = paginationHelpers.calculatePagination({});
+
+
+	const allBook = await prisma.book.findMany({
+		include: {
+			category: true,
+		},
+		where: {
+			categoryId
+		},
+		skip,
+		take: size,
+		orderBy: { [sortBy]: sortOrder },
+	})
+
+	const total = await prisma.book.count({
+		where: {
+			categoryId
+		},
+	});
+	const totalPage = Math.ceil(total / size)
+	return {
+		meta: {
+			total,
+			page,
+			size,
+			totalPage
+		},
+		data: allBook,
+	};
+}
 const getAllBook = async (
 	filters: IBookFilterableFields,
 	options: IPaginationOptions
@@ -92,6 +129,7 @@ const getAllBook = async (
 	};
 }
 
+
 const getSingleBook = async (id: string): Promise<Book | null> => {
 	const singleBook = await prisma.book.findUnique({
 		where: {
@@ -124,6 +162,7 @@ const deleteBook = async (id: string): Promise<Book | null> => {
 
 export const BookService = {
 	createBook,
+	getBooksByCategory,
 	getAllBook,
 	getSingleBook,
 	updateBook,

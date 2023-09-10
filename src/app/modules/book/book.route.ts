@@ -9,12 +9,14 @@ import { BookValidation } from './book.validation';
 const router = express.Router();
 
 router.get('/', BookController.getAllBook);
-router.get('/:categoryId/category', BookController.getSingleBook);
+router.get('/:categoryId/category', BookController.getBooksByCategory);
+
 router.get('/:id', BookController.getSingleBook);
 
 router.post(
-	'/create-Book',
+	'/create-book',
 	validateRequest(BookValidation.createBookZodSchema),
+	auth(ENUM_USER_ROLE.ADMIN),
 	BookController.createBook
 );
 
