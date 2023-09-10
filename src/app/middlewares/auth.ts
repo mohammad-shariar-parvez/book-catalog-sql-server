@@ -21,15 +21,18 @@ const auth =
         let verifiedUser = null;
         verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
         req.user = verifiedUser; // role  , userid ,email
+        // console.log("from auth", verifiedUser);
 
-        //Check whether valid user exist on database 
+        //Check whether valid user exist on database
+        // case- user deleted but he has refresh token
+        // checking deleted user's refresh token
         const isUserExist = await prisma.user.findUnique({
           where: {
             id: verifiedUser.userId
           }
         });
         if (!isUserExist) {
-          throw new ApiError(httpStatus.NOT_FOUND, 'Valid user does not exist in token');
+          throw new ApiError(httpStatus.NOT_FOUND, 'Token user does not exist in Database');
         }
         //Check whether valid Role exist on database 
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
