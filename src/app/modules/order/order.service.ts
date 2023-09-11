@@ -77,7 +77,7 @@ const createOrder = async (payload: IOrderCreateData, token: string): Promise<an
 
 
 	if (newOrder) {
-		const responseData = await prisma.order.findUnique({
+		const responseData = await prisma.order.findUniqueOrThrow({
 			where: {
 				id: newOrder.id
 			},
@@ -98,7 +98,6 @@ const createOrder = async (payload: IOrderCreateData, token: string): Promise<an
 
 	throw new ApiError(httpStatus.BAD_REQUEST, "Unable to create order")
 }
-
 
 
 // const getAllOrder = async (
@@ -199,7 +198,7 @@ const getOrderByOrderId = async (token: string, orderId: string): Promise<any | 
 
 	}
 	else if (verifiedToken.role == "admin") {
-		const result = await prisma.order.findUnique({
+		const result = await prisma.order.findUniqueOrThrow({
 			where: {
 				id: orderId,
 			},
