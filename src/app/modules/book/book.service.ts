@@ -131,7 +131,7 @@ const getAllBook = async (
 
 
 const getSingleBook = async (id: string): Promise<Book | null> => {
-	const singleBook = await prisma.book.findUnique({
+	const singleBook = await prisma.book.findUniqueOrThrow({
 		where: {
 			id
 		}
