@@ -25,6 +25,18 @@ const handleClientError = (error: Prisma.PrismaClientKnownRequestError) => {
       ];
     }
   }
+  else if (error.code === 'P2002') {
+    if (error.message.includes("prisma.user.create()` invocation:")) {
+
+      message = `${error.meta?.target} already exists.Data Must be Unique`;
+      errors = [
+        {
+          path: "",
+          message
+        },
+      ];
+    }
+  }
 
   const statusCode = 400;
   return {
