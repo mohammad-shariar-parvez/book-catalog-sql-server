@@ -54,12 +54,13 @@ const getAllUsers = async (
 
 
 const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
-	const result = await prisma.user.findUnique({
+	const result = await prisma.user.findUniqueOrThrow({
 		where: {
 			id,
 		},
 		select: userSelect
 	});
+	console.log(result);
 
 	return result;
 };
