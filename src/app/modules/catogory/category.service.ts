@@ -14,11 +14,13 @@ const getAllCategory = async (): Promise<Category[]> => {
 }
 
 const getSingleCategory = async (id: string): Promise<Category | null> => {
-	const singleCategory = await prisma.category.findUnique({
+	const singleCategory = await prisma.category.findUniqueOrThrow({
 		where: {
 			id
 		}
 	})
+	console.log(singleCategory);
+
 	return singleCategory
 }
 
