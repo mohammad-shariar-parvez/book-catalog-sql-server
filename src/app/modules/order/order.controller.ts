@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
+import { IUser } from "../../../interfaces/common";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { OrderService } from "./order.service";
@@ -7,8 +8,8 @@ import { OrderService } from "./order.service";
 
 const createOrder = catchAsync(async (req: Request, res: Response) => {
 	//console.log(req.body)
-	const { refreshToken } = req.cookies;
-	const result = await OrderService.createOrder(req.body, refreshToken);
+	const user: IUser = (req as any).user
+	const result = await OrderService.createOrder(req.body, user);
 
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
@@ -20,8 +21,13 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
 
 
 const getAllOrder = catchAsync(async (req: Request, res: Response) => {
-	const { refreshToken } = req.cookies;
-	const result = await OrderService.getAllOrder(refreshToken);
+	const user: IUser = (req as any).user
+	console.log("USER", user);
+	console.log(req.cookies);
+
+
+
+	const result = await OrderService.getAllOrder(user);
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
@@ -30,9 +36,9 @@ const getAllOrder = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 const getOrderByOrderId = catchAsync(async (req: Request, res: Response) => {
-	const { refreshToken } = req.cookies;
+	const user: IUser = (req as any).user
 	const orderId = req.params.orderId;
-	const result = await OrderService.getOrderByOrderId(refreshToken, orderId);
+	const result = await OrderService.getOrderByOrderId(user, orderId);
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,

@@ -2,28 +2,23 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import httpStatus from "http-status";
-import { Secret } from "jsonwebtoken";
-import config from "../../../config";
 import ApiError from "../../../errors/ApiError";
-import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import { IUser } from "../../../interfaces/common";
 import { prisma } from "../../../shared/prisma";
 import { asyncForEach } from "../../../shared/utils";
 import { IOrderCreateData, IOrderedBook } from "./order.interface";
 
 
-const createOrder = async (payload: IOrderCreateData, token: string): Promise<any> => {
+const createOrder = async (payload: IOrderCreateData, user: IUser): Promise<any> => {
+	const { userId, role } = user
 	const { orderedBooks } = payload;
-	let verifiedToken = null;
 
-	verifiedToken = jwtHelpers.verifyToken(
-		token,
-		config.jwt.refresh_secret as Secret
-	);
 
-	if (verifiedToken.role != "customer") {
+
+
+	if (role != "customer") {
 		throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Role. Only Customer can place an order.');
 	}
-	const { userId } = verifiedToken;
 
 
 
@@ -119,18 +114,12 @@ const createOrder = async (payload: IOrderCreateData, token: string): Promise<an
 
 // 	return result;
 // };
-const getAllOrder = async (token: string): Promise<any[]> => {
+const getAllOrder = async (user: IUser): Promise<any[]> => {
+	const { userId, role } = user
+	console.log("service user", user);
 
 
-	const verifiedToken = jwtHelpers.verifyToken(
-		token,
-		config.jwt.refresh_secret as Secret
-	);
-
-	const { userId } = verifiedToken;
-	console.log("FFFFF", verifiedToken);
-
-	if (verifiedToken.role == "customer") {
+	if (role == "customer") {
 		const result = await prisma.order.findMany({
 			where: {
 				userId
@@ -161,20 +150,14 @@ const getAllOrder = async (token: string): Promise<any[]> => {
 	}
 
 };
-const getOrderByOrderId = async (token: string, orderId: string): Promise<any | null> => {
+const getOrderByOrderId = async (user: IUser, orderId: string): Promise<any | null> => {
+
+	const { userId, role } = user
 
 
-	const verifiedToken = jwtHelpers.verifyToken(
-		token,
-		config.jwt.refresh_secret as Secret
-	);
-
-	const { userId } = verifiedToken;
-
-	console.log("eeeeee", verifiedToken);
 
 
-	if (verifiedToken.role == "customer") {
+	if (role == "customer") {
 		const result = await prisma.order.findUnique({
 			where: {
 				id: orderId,
@@ -197,7 +180,7 @@ const getOrderByOrderId = async (token: string, orderId: string): Promise<any | 
 		return result;
 
 	}
-	else if (verifiedToken.role == "admin") {
+	else if (role == "admin") {
 		const result = await prisma.order.findUniqueOrThrow({
 			where: {
 				id: orderId,
