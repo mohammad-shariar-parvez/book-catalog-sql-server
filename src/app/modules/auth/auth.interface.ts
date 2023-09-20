@@ -1,9 +1,6 @@
 import { ENUM_USER_ROLE } from "../../../enums/user";
 
-export type ILoginUserResponse = {
-	accessToken: string;
-	refreshToken?: string;
-};
+export type ILoginUserResponse = string;
 
 
 export type IRefreshTokenResponse = {

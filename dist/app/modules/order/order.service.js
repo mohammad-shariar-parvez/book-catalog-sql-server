@@ -100,7 +100,7 @@ const createOrder = (payload, token) => __awaiter(void 0, void 0, void 0, functi
 const getAllOrder = (token) => __awaiter(void 0, void 0, void 0, function* () {
     const verifiedToken = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.refresh_secret);
     const { userId } = verifiedToken;
-    console.log("FFFFF", verifiedToken);
+
     if (verifiedToken.role == "customer") {
         const result = yield prisma_1.prisma.order.findMany({
             where: {

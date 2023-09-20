@@ -56,16 +56,13 @@ const signinUser = async (
 		config.jwt.secret as Secret,
 		config.jwt.expires_in as string
 	);
-	const refreshToken = jwtHelpers.createToken(
-		{ userId, role, useEmail },
-		config.jwt.refresh_secret as Secret,
-		config.jwt.refresh_expires_in as string
-	);
+	// const refreshToken = jwtHelpers.createToken(
+	// 	{ userId, role, useEmail },
+	// 	config.jwt.refresh_secret as Secret,
+	// 	config.jwt.refresh_expires_in as string
+	// );
 
-	return {
-		accessToken,
-		refreshToken,
-	};
+	return accessToken
 	// console.log("user signup", result);
 	// console.log("login", isUserExist);
 

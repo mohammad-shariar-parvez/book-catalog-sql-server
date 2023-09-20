@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import config from "../../../config";
 import catchAsync from "../../../shared/catchAsync";
-import sendResponse from "../../../shared/sendResponse";
+import sendResponse, { sendloginResponse } from "../../../shared/sendResponse";
 import { ILoginUserResponse, IRefreshTokenResponse } from "./auth.interface";
 import { AuthService } from "./auth.service";
 
@@ -22,18 +22,17 @@ const signupUser = catchAsync(async (req: Request, res: Response) => {
 const signinUser = catchAsync(async (req: Request, res: Response) => {
 	const { ...loginData } = req.body;
 	const result = await AuthService.signinUser(loginData);
-	const { refreshToken, ...others } = result;
 	const cookieOptions = {
 		secure: config.env === 'production',
 		httpOnly: true,
 	};
 	res.cookie('refreshToken', refreshToken, cookieOptions);
 
-	sendResponse<ILoginUserResponse>(res, {
+	sendloginResponse<ILoginUserResponse>(res, {
 		success: true,
 		statusCode: httpStatus.OK,
 		message: 'User signin successfully!',
-		data: others,
+		token: result,
 	});
 });
 
