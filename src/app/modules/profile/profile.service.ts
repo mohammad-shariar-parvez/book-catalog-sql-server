@@ -1,23 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { User } from "@prisma/client";
-import { Secret } from "jsonwebtoken";
-import config from "../../../config";
-import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import { IUser } from "../../../interfaces/common";
 import { prisma } from "../../../shared/prisma";
 
 
 
-const getProfile = async (token: string): Promise<User | null> => {
-
-
-	const verifiedToken = jwtHelpers.verifyToken(
-		token,
-		config.jwt.refresh_secret as Secret
-	);
-
-	const { userId } = verifiedToken;
-
+const getProfile = async (user: IUser): Promise<User | null> => {
+	const { userId } = user;
 	const result = await prisma.user.findUnique({
 		where: {
 			id: userId
@@ -29,4 +19,4 @@ const getProfile = async (token: string): Promise<User | null> => {
 
 export const ProfileService = {
 	getProfile
-}
+};

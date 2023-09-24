@@ -9,8 +9,8 @@ import { ProfileService } from "./profile.service";
 
 
 const getProfile = catchAsync(async (req: Request, res: Response) => {
-	const { refreshToken } = req.cookies;
-	const result = await ProfileService.getProfile(refreshToken);
+	const user = (req as any).user;
+	const result = await ProfileService.getProfile(user);
 	sendResponse<User>(res, {
 		statusCode: httpStatus.OK,
 		success: true,
