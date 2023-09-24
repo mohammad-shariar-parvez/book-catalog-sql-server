@@ -5,8 +5,9 @@
 #### User
 
 - https://msp-book-catalog-sql-server.vercel.app/api/v1/auth/signup (POST)
+- https://msp-book-catalog-sql-server.vercel.app/api/v1/auth/signin (POST)
 - https://msp-book-catalog-sql-server.vercel.app/api/v1/users (GET)
-- https://msp-book-catalog-sql-server.vercel.app/api/v1/users/25654b1f-3df1-4165-ba43-386c829e1e11 (Single GET) Include an id that is saved in your database
+- https://msp-book-catalog-sql-server.vercel.app/api/v1/users/25654b1f-3df1-4165-ba43-386c829e1e11 (Single GET)
 - https://msp-book-catalog-sql-server.vercel.app/api/v1/users/25654b1f-3df1-4165-ba43-386c829e1e11 (PATCH)
 - https://msp-book-catalog-sql-server.vercel.app/api/v1/users/9116226b-75ad-4907-a091-58d15f4f9e61 (DELETE)
 - https://msp-book-catalog-sql-server.vercel.app/api/v1/profile (GET)
